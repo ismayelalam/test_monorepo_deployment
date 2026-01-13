@@ -11,35 +11,10 @@ import { useState } from 'react';
 export default function TodoApp() {
   const [todos, setTodos] = useState([]);
   const [input, setInput] = useState('');
-  const [editingIndex, setEditingIndex] = useState(null);
-  const [editingValue, setEditingValue] = useState('');
 
   const addTodo = () => {
     if (!input.trim()) return;
-    setTodos([...todos, input]);
     setInput('');
-  };
-
-  const removeTodo = (index) => {
-    setTodos(todos.filter((_, i) => i !== index));
-  };
-
-  const startEdit = (index) => {
-    setEditingIndex(index);
-    setEditingValue(todos[index]);
-  };
-
-  const saveEdit = () => {
-    if (editingIndex === null || !editingValue.trim()) return;
-    const updated = [...todos];
-    updated[editingIndex] = editingValue;
-    setTodos(updated);
-    cancelEdit();
-  };
-
-  const cancelEdit = () => {
-    setEditingIndex(null);
-    setEditingValue('');
   };
 
   return (
@@ -61,39 +36,7 @@ export default function TodoApp() {
 
           <ul>
             {todos.map((todo, index) => (
-              <li key={index} className="flex py-4 items-center gap-2">
-                <Checkbox id={todo} className="size-5" />
-                {editingIndex === index ? (
-                  <Input
-                    value={editingValue}
-                    onChange={(e) => setEditingValue(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
-                    autoFocus
-                  />
-                ) : (
-                  <Label className="flex-1 truncate" htmlFor={todo}>
-                    {todo}
-                  </Label>
-                )}
-
-                <div className="flex gap-1">
-                  {editingIndex === index ? (
-                    <>
-                      <Button onClick={saveEdit}>Save</Button>
-                      <Button onClick={cancelEdit}>Cancel</Button>
-                    </>
-                  ) : (
-                    <>
-                      <Button onClick={() => startEdit(index)}>
-                        <Edit />
-                      </Button>
-                      <Button onClick={() => removeTodo(index)}>
-                        <Trash />
-                      </Button>
-                    </>
-                  )}
-                </div>
-              </li>
+              <TodoItem key={index} todo={todo} />
             ))}
           </ul>
 
@@ -105,5 +48,67 @@ export default function TodoApp() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+function TodoItem({ todo }) {
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingValue, setEditingValue] = useState('');
+
+  const startEdit = (index) => {
+    setEditingIndex(index);
+    setEditingValue(todos[index]);
+  };
+
+  const saveEdit = () => {
+    if (editingIndex === null || !editingValue.trim()) return;
+    const updated = [...todos];
+    updated[editingIndex] = editingValue;
+    cancelEdit();
+  };
+
+  const cancelEdit = () => {
+    setEditingIndex(null);
+    setEditingValue('');
+  };
+
+  const removeTodo = (index) => {
+    setTodos(todos.filter((_, i) => i !== index));
+  };
+
+  return (
+    <li className="flex py-4 items-center gap-2">
+      <Checkbox id={todo} className="size-5" />
+      {editingIndex === index ? (
+        <Input
+          value={editingValue}
+          onChange={(e) => setEditingValue(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && saveEdit()}
+          autoFocus
+        />
+      ) : (
+        <Label className="flex-1 truncate" htmlFor={todo}>
+          {todo}
+        </Label>
+      )}
+
+      <div className="flex gap-1">
+        {editingIndex === index ? (
+          <>
+            <Button onClick={saveEdit}>Save</Button>
+            <Button onClick={cancelEdit}>Cancel</Button>
+          </>
+        ) : (
+          <>
+            <Button onClick={() => startEdit(index)}>
+              <Edit />
+            </Button>
+            <Button onClick={() => removeTodo(index)}>
+              <Trash />
+            </Button>
+          </>
+        )}
+      </div>
+    </li>
   );
 }
