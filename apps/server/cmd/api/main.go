@@ -2,70 +2,52 @@ package main
 
 import (
 	"fmt"
-	"log"
+	"todo/config"
+	"todo/internal/database"
+	"todo/internal/routes"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/helmet"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-type Todo struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
-	Done  bool   `json:"done"`
-	Body  string `json:"body"`
-}
-
 func main() {
-	fmt.Print("Hello world")
+	cfg := config.AppConfig()
+	app := fiber.New(fiber.Config{})
 
-	app := fiber.New()
+	db, err := database.ConnectPostgresql(cfg.DB)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
 
+	app.Use(LoggerConfig())
+	app.Use(helmet.New())
+	app.Use(compress.New())
 	app.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowHeaders: "Origin, Content-Type, Accept",
+		AllowOrigins: config.FrontEndURL,
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization, Credentials",
+		AllowMethods: "GET, POST, PUT, DELETE, OPTIONS",
 	}))
 
-	todos := []Todo{}
+	group := app.Group("/api")
+	routes := routes.RegisterRoutes(group, db)
+	routes.SetupRoutes()
 
-	app.Get("/healthcheck", func(c *fiber.Ctx) error {
-		return c.SendString("OK")
+	startServer(app, cfg.PortAddress)
+}
+
+func startServer(app *fiber.App, address string) {
+	if err := app.Listen(address); err != nil {
+		fmt.Println("error starting server: %w", err)
+	}
+}
+
+func LoggerConfig() fiber.Handler {
+	return logger.New(logger.Config{
+		Format:     "${time} | ${method} | ${status} | ${path} | ${latency} | ${error} \n",
+		TimeFormat: "15:04:05.00",
 	})
-
-	app.Post("/api/todos", func(c *fiber.Ctx) error {
-		todo := &Todo{}
-
-		if err := c.BodyParser(todo); err != nil {
-			return err
-		}
-
-		todo.ID = len(todos) + 1
-
-		todos = append(todos, *todo)
-
-		return c.JSON(todos)
-
-	})
-
-	app.Patch("/api/todos/:id/done", func(c *fiber.Ctx) error {
-		id, err := c.ParamsInt("id")
-
-		if err != nil {
-			return c.Status(401).SendString("Invalid id")
-		}
-
-		for i, t := range todos {
-			if t.ID == id {
-				todos[i].Done = true
-				break
-			}
-		}
-
-		return c.JSON(todos)
-	})
-
-	app.Get("/api/todos", func(c *fiber.Ctx) error {
-		return c.JSON(todos)
-	})
-
-	log.Fatal(app.Listen(":4000"))
 }
