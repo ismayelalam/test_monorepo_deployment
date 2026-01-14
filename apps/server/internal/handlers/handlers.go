@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"database/sql"
+	"fmt"
 	"todo/internal/services"
 	"todo/internal/utils"
 
@@ -20,7 +21,7 @@ type createData struct {
 	Content string `json:"content" validate:"required,min=1,max=256"`
 }
 type updateData struct {
-	Done bool `json:"done" validate:"required" example:"true"`
+	Done *bool `json:"done" validate:"required" example:"true"`
 }
 
 func RegisterHandlers(db *sql.DB) *Handlers {
@@ -79,7 +80,7 @@ func (h *Handlers) UpdateTodo(c *fiber.Ctx) error {
 
 	err = h.services.UpdateTodo(c.Context(), services.UpdateTodoParams{
 		ID:        todoUUID,
-		Completed: req.Done,
+		Completed: *req.Done,
 	})
 	if err != nil {
 		return err
@@ -92,13 +93,16 @@ func (h *Handlers) DeleteTodo(c *fiber.Ctx) error {
 	if todoId == "" {
 		return fiber.ErrBadRequest
 	}
+	fmt.Println(todoId)
 	todoUUID, err := uuid.Parse(todoId)
 	if err != nil {
 		return fiber.ErrBadRequest
 	}
+	fmt.Println(todoUUID)
 
 	err = h.services.DeleteTodo(c.Context(), todoUUID)
 	if err != nil {
+		fmt.Println(err)
 		return err
 	}
 	return c.SendStatus(fiber.StatusOK)
