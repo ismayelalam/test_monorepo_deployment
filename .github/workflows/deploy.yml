@@ -66,15 +66,26 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Trigger Dokploy deployments
-      - name: Deploy web to Dokploy
+      - name: Deploy Web to Dokploy
         run: |
-          curl -X POST "${{ secrets.DOKPLOY_WEB_DEPLOY_URL }}" \
-            -H "Content-Type: application/json" \
-            -d '{"image": "${{ env.WEB_IMAGE }}"}'
+          curl -X 'POST' \
+            '${{ secrets.DOKPLOY_URL }}/api/application.deploy' \
+            -H 'accept: application/json' \
+            -H 'x-api-key: ${{ secrets.DOKPLOY_API_KEY }}' \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "applicationId": "${{ secrets.DOKPLOY_WEB_APP_ID }}",
+              "imageUrl": "${{ env.WEB_IMAGE }}"
+            }'
 
-      - name: Deploy server to Dokploy
+      - name: Deploy Server to Dokploy
         run: |
-          curl -X POST "${{ secrets.DOKPLOY_SERVER_DEPLOY_URL }}" \
-            -H "Content-Type: application/json" \
-            -d '{"image": "${{ env.SERVER_IMAGE }}"}'
+          curl -X 'POST' \
+            '${{ secrets.DOKPLOY_URL }}/api/application.deploy' \
+            -H 'accept: application/json' \
+            -H 'x-api-key: ${{ secrets.DOKPLOY_API_KEY }}' \
+            -H 'Content-Type: application/json' \
+            -d '{
+              "applicationId": "${{ secrets.DOKPLOY_SERVER_APP_ID }}",
+              "imageUrl": "${{ env.SERVER_IMAGE }}"
+            }'
