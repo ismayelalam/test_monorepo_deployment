@@ -24,13 +24,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm'
 
       - name: Set up pnpm
         run: corepack enable pnpm
 
       - name: Install dependencies
         run: pnpm install
+        with:
+          version: 9
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
