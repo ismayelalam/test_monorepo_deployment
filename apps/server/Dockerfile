@@ -16,7 +16,6 @@ FROM alpine:latest
 
 COPY --from=builder /app/main /main
 COPY apps/server/start.sh /start.sh
-COPY apps/server/.env /.env
 
 # Make script executable
 RUN chmod +x /start.sh
