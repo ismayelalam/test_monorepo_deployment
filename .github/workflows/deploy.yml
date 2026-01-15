@@ -51,6 +51,7 @@ jobs:
           context: .
           file: ./apps/web/Dockerfile
           push: true
+          platforms: linux/amd64
           tags: ${{ env.WEB_IMAGE }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
