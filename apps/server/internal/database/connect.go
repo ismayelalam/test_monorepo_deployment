@@ -17,7 +17,6 @@ func ConnectPostgresql(cfg config.DBConfig) (*sql.DB, error) {
 
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {
-		fmt.Println(err)
 		// return nil, err
 	}
 
