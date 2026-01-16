@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 const API_URL = process.env.Backend_URL || 'http://localhost:8080 ';
+console.log(API_URL);
 
 const nextConfig: NextConfig = {
   output: 'standalone',
