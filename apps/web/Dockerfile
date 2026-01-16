@@ -28,18 +28,18 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Create non-root user
-RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
+RUN addgroup -g 1001 -S nodejs && adduser -S nextJS -u 1001
 
 # copy standalone output
-COPY --from=base --chown=nextjs:nodejs /app/apps/web/.next/standalone ./
+COPY --from=base --chown=nextJS:nodejs /app/apps/web/.next/standalone ./
 
 # copy required .next/static folder
-COPY --from=base --chown=nextjs:nodejs /app/apps/web/.next/static ./apps/web/.next/static
+COPY --from=base --chown=nextJS:nodejs /app/apps/web/.next/static ./apps/web/.next/static
 
 # copy public folder
-COPY --from=base /app/apps/web/public ./apps/web/public
+COPY --from=base --chown=nextJS:nodejs /app/apps/web/public ./apps/web/public
 
-USER nextjs
+USER nextJS
 
 EXPOSE 3000
 
