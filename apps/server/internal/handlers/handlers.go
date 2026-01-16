@@ -3,6 +3,8 @@ package handlers
 import (
 	"database/sql"
 	"fmt"
+	"math/rand"
+	"strconv"
 	"todo/internal/services"
 	"todo/internal/utils"
 
@@ -30,6 +32,11 @@ func RegisterHandlers(db *sql.DB) *Handlers {
 		validate: utils.Validator(),
 		services: services.New(db),
 	}
+}
+
+func (h *Handlers) RandomNumber(c *fiber.Ctx) error {
+	num := rand.Intn(900000) + 100000
+	return c.JSON(strconv.Itoa(num))
 }
 
 func (h *Handlers) CreateTodo(c *fiber.Ctx) error {

@@ -1,6 +1,7 @@
 'use client';
 
 import { NewTodo } from '@/components/templates/NewTodo';
+import RandomButton from '@/components/templates/RandomButton';
 import TodoItem from '@/components/templates/TodoItem';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { axiosCall } from '@/lib/api';
@@ -27,7 +28,8 @@ export default function TodoApp() {
         <CardHeader>
           <h1 className="text-center font-bold text-2xl">Todo App</h1>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <RandomButton />
           <NewTodo refetch={() => setRefetch((v) => !v)} />
 
           <ul>

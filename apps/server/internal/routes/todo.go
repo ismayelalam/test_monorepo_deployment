@@ -27,6 +27,7 @@ func (r *Routes) SetupRoutes() {
 
 	todo.Post("/", r.handlers.CreateTodo)
 	todo.Get("/", r.handlers.GetTodo)
+	todo.Get("/rand", r.handlers.RandomNumber)
 	todo.Patch("/:id", r.handlers.UpdateTodo)
 	todo.Delete("/:id", r.handlers.DeleteTodo)
 }
