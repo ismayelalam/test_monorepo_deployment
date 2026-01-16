@@ -30,12 +30,12 @@ RUN addgroup -g 1001 -S nodejs && \
     adduser -S nextjs -u 1001
 
 # Copy standalone output (requires `output: 'standalone'` in next.config.js/mjs)
-COPY --from=base /app/apps/web/.next/standalone ./
-COPY --from=base /app/apps/web/.next/static ./public/static
-COPY --from=base /app/apps/web/public ./public
+COPY --from=builder /app/.next/standalone/apps/web ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/apps/web/public ./public
 
 USER nextjs
 
 EXPOSE 3000
 
-CMD ["node", "apps/web/server.js"]
+CMD ["node", "server.js"]
