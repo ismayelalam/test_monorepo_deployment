@@ -9,7 +9,7 @@ RUN go mod download
 COPY apps/server/ .
 
 # Build static binary
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main ./cmd/api
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o main ./cmd/api
 
 # Final minimal image
 FROM alpine:latest
