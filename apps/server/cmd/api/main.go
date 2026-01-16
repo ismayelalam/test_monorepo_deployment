@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"strconv"
 	"todo/config"
-	"todo/internal/database"
-	"todo/internal/routes"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
@@ -17,12 +17,12 @@ func main() {
 	cfg := config.AppConfig()
 	app := fiber.New(fiber.Config{})
 
-	db, err := database.ConnectPostgresql(cfg.DB)
-	if err != nil {
-		fmt.Println(err)
-		// panic(err)
-	}
-	defer db.Close()
+	// db, err := database.ConnectPostgresql(cfg.DB)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// 	// panic(err)
+	// }
+	// defer db.Close()
 
 	app.Use(LoggerConfig())
 	app.Use(helmet.New())
@@ -34,8 +34,16 @@ func main() {
 	}))
 
 	group := app.Group("/api")
-	routes := routes.RegisterRoutes(group, db)
-	routes.SetupRoutes()
+
+	todo := group.Group("/todo")
+
+	todo.Get("/rand", func(c *fiber.Ctx) error {
+		num := rand.Intn(900000) + 100000
+		return c.JSON(strconv.Itoa(num))
+	})
+
+	// routes := routes.RegisterRoutes(group, db)
+	// routes.SetupRoutes()
 
 	startServer(app, cfg.PortAddress)
 }
