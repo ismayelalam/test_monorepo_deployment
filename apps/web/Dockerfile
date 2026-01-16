@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM --platform=$BUILDPLATFORM node:20-alpine AS base
 
 # Enable corepack to use pnpm without global install
 RUN corepack enable pnpm
