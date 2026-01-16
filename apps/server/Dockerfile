@@ -14,8 +14,11 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o main ./cmd/api
 # Final minimal image
 FROM alpine:latest
 
+RUN go install github.com/pressly/goose/v3/cmd/goose@latest
+
 COPY --from=builder /app/main /main
 COPY apps/server/start.sh /start.sh
+COPY apps/server/migrations /migrations
 
 # Make script executable
 RUN chmod +x /main /start.sh
