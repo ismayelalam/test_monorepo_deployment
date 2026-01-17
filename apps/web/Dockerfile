@@ -15,7 +15,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 # Install all dependencies (monorepo-wide)
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --recursive
 
 # Copy entire source code
 COPY . .
