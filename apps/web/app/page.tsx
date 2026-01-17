@@ -31,6 +31,10 @@ export default function TodoApp() {
         <CardContent className="space-y-4">
           <RandomButton />
           <NewTodo refetch={() => setRefetch((v) => !v)} />
+          <p>{process.env.test}</p>
+          <p>{process.env.Backend_URL}</p>
+          <p>{process.env.NEXT_PUBLIC_test}</p>
+          <p>{process.env.NEXT_PUBLIC_Backend_URL}</p>
 
           <ul>
             {todos?.map((todo, index) => (

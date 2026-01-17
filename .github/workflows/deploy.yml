@@ -21,19 +21,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Set up Node.js
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 24
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
 
-      # - name: Install pnpm
-      #   uses: pnpm/action-setup@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
-      # - name: Set up pnpm
-      #   run: corepack enable pnpm
+      - name: Set up pnpm
+        run: corepack enable pnpm
 
-      # - name: Install dependencies
-      #   run: pnpm install
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -61,7 +59,7 @@ jobs:
             ghcr.io/ismayelalam/myapp-web:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          args: |
+          build-args: |
             Backend_URL=${{ env.Backend_URL }}
 
       # Build and push Go backend
