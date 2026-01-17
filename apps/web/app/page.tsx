@@ -32,9 +32,9 @@ export default function TodoApp() {
           <RandomButton />
           <NewTodo refetch={() => setRefetch((v) => !v)} />
           <p>TEST: {process.env.TEST}</p>
-          <p>Backend_URL: {process.env.Backend_URL}</p>
+          <p>BACKEND_URL: {process.env.BACKEND_URL}</p>
           <p>NEXT_PUBLIC_TEST: {process.env.NEXT_PUBLIC_TEST}</p>
-          <p>NEXT_PUBLIC_Backend_URL: {process.env.NEXT_PUBLIC_Backend_URL}</p>
+          <p>NEXT_PUBLIC_BACKEND_URL: {process.env.NEXT_PUBLIC_BACKEND_URL}</p>
 
           <ul>
             {todos?.map((todo, index) => (
