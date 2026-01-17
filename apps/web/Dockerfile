@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:20-alpine AS base
+FROM --platform=$BUILDPLATFORM node:24-alpine AS base
 
 # Set them as ENV so Next.js sees them during build
 ARG Backend_URL
@@ -24,7 +24,7 @@ COPY . .
 RUN pnpm build 
 
 # --- Production stage ---
-FROM node:20-alpine AS runner
+FROM node:24-alpine AS runner
 
 # Enable pnpm (optional, but good practice)
 RUN corepack enable pnpm
