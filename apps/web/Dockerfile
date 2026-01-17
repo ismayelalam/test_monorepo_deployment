@@ -1,5 +1,9 @@
 FROM --platform=$BUILDPLATFORM node:20-alpine AS base
 
+# Set them as ENV so Next.js sees them during build
+ARG Backend_URL
+ENV Backend_URL=${Backend_URL}
+
 # Enable corepack to use pnpm without global install
 RUN corepack enable pnpm
 
@@ -10,10 +14,6 @@ COPY package.json pnpm-lock.yaml ./
 
 # Install all dependencies (monorepo-wide)
 RUN pnpm install --frozen-lockfile
-
-# Set them as ENV so Next.js sees them during build
-ARG Backend_URL
-ENV Backend_URL=${Backend_URL}
 
 # Copy entire source code
 COPY . .
