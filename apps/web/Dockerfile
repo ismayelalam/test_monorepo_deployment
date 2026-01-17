@@ -13,7 +13,7 @@ RUN pnpm install --frozen-lockfile
 
 # Set them as ENV so Next.js sees them during build
 ARG Backend_URL
-ENV Backend_URL=$Backend_URL
+ENV Backend_URL=${Backend_URL}
 
 # Copy entire source code
 COPY . .
