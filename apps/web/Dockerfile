@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:24-alpine AS base
+FROM --platform=$BUILDPLATFORM node:22-alpine AS base
 
 # Set them as ENV so Next.js sees them during build
 ARG BACKEND_URL
@@ -12,11 +12,12 @@ ENV TEST=${TEST}
 ENV NEXT_PUBLIC_TEST=${NEXT_PUBLIC_TEST}
 ENV NODE_ENV=production
 
-
 RUN echo "Backend_URL=$NEXT_PUBLIC_BACKEND_URL"
 
 # Enable corepack to use pnpm without global install
 RUN corepack enable pnpm
+
+RUN pnpm add -g turbo
 
 WORKDIR /app
 
@@ -33,7 +34,7 @@ COPY . .
 RUN pnpm build 
 
 # --- Production stage ---
-FROM node:24-alpine AS runner
+FROM node:22-alpine AS runner
 
 # Enable pnpm (optional, but good practice)
 RUN corepack enable pnpm
