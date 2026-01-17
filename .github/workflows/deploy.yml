@@ -61,7 +61,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            Backend_URL=${{ vars.Backend_URL }}
+            Backend_URL=${{ env.Backend_URL }}
 
       # Build and push Go backend
       - name: Build and push server (Go)
