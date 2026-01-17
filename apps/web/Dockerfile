@@ -17,8 +17,6 @@ RUN echo "Backend_URL=$NEXT_PUBLIC_BACKEND_URL"
 # Enable corepack to use pnpm without global install
 RUN corepack enable pnpm
 
-RUN pnpm add -g turbo
-
 WORKDIR /app
 
 # Copy root package files (required for pnpm install)
