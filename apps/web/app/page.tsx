@@ -17,7 +17,7 @@ export default function TodoApp() {
       const getTodo = await axiosCall({
         method: 'get',
       });
-      setTodos(getTodo);
+      setTodos(() => getTodo);
     }
     fetchData();
   }, [refetch]);
@@ -31,11 +31,6 @@ export default function TodoApp() {
         <CardContent className="space-y-4">
           <RandomButton />
           <NewTodo refetch={() => setRefetch((v) => !v)} />
-          <p>TEST: {process.env.TEST}</p>
-          <p>BACKEND_URL: {process.env.BACKEND_URL}</p>
-          <p>NEXT_PUBLIC_TEST: {process.env.NEXT_PUBLIC_TEST}</p>
-          <p>NEXT_PUBLIC_BACKEND_URL: {process.env.NEXT_PUBLIC_BACKEND_URL}</p>
-
           <ul>
             {todos?.map((todo, index) => (
               <TodoItem
