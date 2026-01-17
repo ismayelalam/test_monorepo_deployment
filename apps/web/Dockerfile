@@ -2,12 +2,12 @@ FROM --platform=$BUILDPLATFORM node:24-alpine AS base
 
 # Set them as ENV so Next.js sees them during build
 ARG Backend_URL
-ARG NEXT_PUBLIC_Backend_URL
+ARG NEXT_PUBLIC_BACKEND_URL
 ARG test
 ARG NEXT_PUBLIC_test
 
 ENV Backend_URL=${Backend_URL}
-ENV NEXT_PUBLIC_Backend_URL=${NEXT_PUBLIC_Backend_URL}
+ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
 ENV test=${test}
 ENV NEXT_PUBLIC_test=${NEXT_PUBLIC_test}
 ENV NODE_ENV=production

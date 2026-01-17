@@ -8,7 +8,7 @@ on:
 env:
   WEB_IMAGE: ghcr.io/${{ github.repository_owner }}/myapp-web:${{ github.sha }}
   SERVER_IMAGE: ghcr.io/${{ github.repository_owner }}/myapp-server:${{ github.sha }}
-  Backend_URL: ${{ vars.BACKEND_URL }}
+  NEXT_PUBLIC_BACKEND_URL: ${{ vars.NEXT_PUBLIC_BACKEND_URL }}
 
 jobs:
   build-and-deploy:
@@ -60,7 +60,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            Backend_URL=${{ env.Backend_URL }}
+            NEXT_PUBLIC_BACKEND_URL=${{ env.NEXT_PUBLIC_BACKEND_URL }}
 
       # Build and push Go backend
       - name: Build and push server (Go)
