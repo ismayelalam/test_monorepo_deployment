@@ -3,10 +3,7 @@ name: Deploy to Dokploy (GHCR)
 on:
   push:
     branches: [main]
-
-permissions:
-  contents: write
-  packages: write
+  workflow_dispatch:
 
 env:
   WEB_IMAGE: ghcr.io/${{ github.repository_owner }}/myapp-web:${{ github.sha }}
@@ -21,15 +18,12 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       packages: write # Required to push to GHCR
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # REQUIRED for tags
-          persist-credentials: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
