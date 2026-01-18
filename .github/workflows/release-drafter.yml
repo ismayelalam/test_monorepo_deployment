@@ -1,32 +1,38 @@
-name: Release Drafter
+name: Release
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    types: [opened, reopened, synchronize, labeled]
 
 permissions:
   contents: write
-  pull-requests: read
 
 jobs:
-  update_release_draft:
+  release:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: release-drafter/release-drafter@v6
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          config-name: release.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Ensure CHANGELOG.md exists
+        run: |
+          if [ ! -f CHANGELOG.md ]; then
+            echo "# Changelog" > CHANGELOG.md
+            git add CHANGELOG.md
+            git commit -m "chore: initialize changelog"
+            git push
+          fi
 
       - name: Get next version
         id: version
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          default_bump: patch # major | minor | patch
+          default_bump: patch
           tag_prefix: v
 
       - name: Update CHANGELOG.md
@@ -36,13 +42,13 @@ jobs:
           latest-version: ${{ steps.version.outputs.new_tag }}
           path-to-changelog: CHANGELOG.md
 
-      - name: Commit CHANGELOG.md
+      - name: Commit updated CHANGELOG.md
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add CHANGELOG.md
-          git commit -m "chore(release): update changelog for ${{ steps.version.outputs.new_tag }}"
-          git push
+          git commit -m "chore(release): update changelog for ${{ steps.version.outputs.new_tag }}" || echo "No changes to commit"
+          git push || echo "Push failed (maybe no new changes)"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
