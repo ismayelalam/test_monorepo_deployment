@@ -30,10 +30,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="flex items-center justify-center h-screen bg-accent-foreground">
-          <p>TEST: {process.env.TEST}</p>
-          <p>BACKEND_URL: {process.env.BACKEND_URL}</p>
-          <p>NEXT_PUBLIC_TEST: {process.env.NEXT_PUBLIC_TEST}</p>
-          <p>NEXT_PUBLIC_BACKEND_URL: {process.env.NEXT_PUBLIC_BACKEND_URL}</p>
           <Card className="w-xl space-y-6">
             <div className="flex items-center justify-center gap-4">
               <Link href="/" className="hover:underline font-semibold">
