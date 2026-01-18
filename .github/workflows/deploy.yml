@@ -57,7 +57,7 @@ jobs:
           context: .
           file: ./apps/web/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           tags: |
             ${{ env.WEB_IMAGE }}
             ghcr.io/ismayelalam/myapp-web:latest
@@ -76,7 +76,7 @@ jobs:
           context: .
           file: ./apps/server/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           tags: |
             ${{ env.SERVER_IMAGE }}
             ghcr.io/ismayelalam/myapp-server:latest
