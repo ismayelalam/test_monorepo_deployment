@@ -39,6 +39,21 @@ jobs:
           default_bump: patch # major | minor | patch
           tag_prefix: v
 
+      - name: Update CHANGELOG.md
+        uses: stefanzweifel/changelog-updater-action@v1
+        with:
+          release-notes: ${{ steps.version.outputs.changelog }}
+          latest-version: ${{ steps.version.outputs.new_tag }}
+          path-to-changelog: CHANGELOG.md
+
+      - name: Commit CHANGELOG.md
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add CHANGELOG.md
+          git commit -m "chore(release): update changelog for ${{ steps.version.outputs.new_tag }}"
+          git push
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
