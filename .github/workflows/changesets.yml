@@ -5,29 +5,32 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   version:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: pnpm
 
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-      - run: corepack enable pnpm
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
 
-      # Install dependencies
       - run: pnpm install --frozen-lockfile
 
-      # Create version PR / publish
       - name: Create Release Pull Request
         uses: changesets/action@v1
         with:
-          version: pnpm version-packages
-          publish: pnpm release
+          version: pnpm run version-packages
+          publish: pnpm run release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
