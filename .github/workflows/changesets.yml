@@ -11,18 +11,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Setup Node
       - uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      # Setup pnpm
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
 
+      # Install dependencies
+      - run: pnpm install --frozen-lockfile
+
+      # Create version PR / publish
       - name: Create Release Pull Request
         uses: changesets/action@v1
         with:
-          version: npm run version-packages
-          publish: npm run release
+          version: pnpm version-packages
+          publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
