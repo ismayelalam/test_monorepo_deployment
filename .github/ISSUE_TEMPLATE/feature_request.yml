@@ -14,9 +14,9 @@ body:
       label: 'Feature Category'
       description: 'What area does this feature relate to?'
       options:
+        - 'New Feature Idea'
+        - 'User Experience'
         - 'Performance Enhancement'
-        - 'Developer Experience'
-        - 'Syntax/Language Improvement'
         - 'Tooling Integration'
         - 'Documentation'
         - 'Testing/Quality'
@@ -67,5 +67,3 @@ body:
       options:
         - label: "I've searched for existing feature requests"
           required: true
-        - label: "I'm willing to help implement this feature"
-          required: false

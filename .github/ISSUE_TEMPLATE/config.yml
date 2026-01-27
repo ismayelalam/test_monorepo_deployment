@@ -1,8 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Discord Chat
-    url: https://discord.gg/JBF2ySrh2W
+    url: https://discord.gg/DVWNvt9K
     about: Ask questions and discuss ideas with other users real-time
-  - name: 'Discussions'
-    url: 'https://github.com/Ripple-TS/ripple/discussions'
-    about: 'Ask questions and discuss ideas with the community'
