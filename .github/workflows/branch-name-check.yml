@@ -1,0 +1,25 @@
+name: Enforce Branch Naming
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  branch-name-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch name
+        run: |
+          BRANCH_NAME="${{ github.head_ref }}"
+          echo "Checking branch: $BRANCH_NAME"
+
+          PATTERN="^(feature|fix|hotfix|docs|refactor|test|chore)/[a-z0-9-]+$"
+
+          if [[ ! "$BRANCH_NAME" =~ $PATTERN ]]; then
+            echo "::error::Invalid branch name '$BRANCH_NAME'"
+            echo "Allowed format: <type>/<lowercase-hyphenated-description>"
+            echo "Example: feature/user-authentication"
+            exit 1
+          fi
+
+          echo "Branch name is valid ✅"
