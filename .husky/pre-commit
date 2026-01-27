@@ -1,2 +1,0 @@
-npx @changesets/cli
-npx @changesets/cli version
