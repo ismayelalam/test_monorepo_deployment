@@ -36,7 +36,12 @@ func RegisterHandlers(db *sql.DB) *Handlers {
 
 func (h *Handlers) RandomNumber(c *fiber.Ctx) error {
 	num := rand.Intn(900000) + 100000
-	return c.JSON(strconv.Itoa(num))
+	return c.JSON(fiber.Map{
+		"random_number": strconv.Itoa(num),
+		"ip":            c.IP(),
+		"xff":           string(c.Get(fiber.HeaderXForwardedFor)),
+		"xreal":         string(c.Get("X-Real-IP")),
+	})
 }
 
 func (h *Handlers) CreateTodo(c *fiber.Ctx) error {

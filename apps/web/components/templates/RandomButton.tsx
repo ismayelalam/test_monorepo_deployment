@@ -8,11 +8,13 @@ export default function RandomButton() {
   const [randText, setRandText] = useState('Random');
 
   const getRandText = async () => {
-    const getRand: string = await axiosCall({
+    const getRand: { random_number: string } = await axiosCall({
       method: 'get',
       id: 'rand',
     });
-    setRandText(`${getRand.slice(0, 3)}-${getRand.slice(3)}`);
+    setRandText(
+      `${getRand.random_number.slice(0, 3)}-${getRand.random_number.slice(3)}`
+    );
   };
 
   return (

@@ -15,7 +15,15 @@ import (
 
 func main() {
 	cfg := config.AppConfig()
-	app := fiber.New(fiber.Config{})
+	app := fiber.New(fiber.Config{
+		ProxyHeader:             fiber.HeaderXForwardedFor,
+		EnableTrustedProxyCheck: true,
+		TrustedProxies: []string{
+			"10.0.0.0/8",
+			"172.16.0.0/12",
+			"192.168.0.0/16",
+		},
+	})
 
 	db, err := database.ConnectPostgresql(cfg.DB)
 	if err != nil {
