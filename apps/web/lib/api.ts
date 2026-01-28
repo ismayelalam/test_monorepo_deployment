@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 export interface QueryProps<T> {
   method?: 'get' | 'post' | 'patch' | 'delete';
@@ -13,11 +13,12 @@ export async function axiosCall<T>(props: QueryProps<T>) {
 
     const url = `/api/todo${id ? '/' + id : ''}`;
 
-    const config = {
+    const config: AxiosRequestConfig<Partial<T>> = {
       method,
       maxBodyLength: Infinity,
       url,
       data,
+      withCredentials: true,
     };
 
     const { data: response } = await axios.request(config);

@@ -1,5 +1,0 @@
----
-"my-app": minor
----
-
-test
