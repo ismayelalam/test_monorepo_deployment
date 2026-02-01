@@ -43,6 +43,11 @@ jobs:
             ghcr.io/ismayelalam/myapp-web:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          build-args: |
+            BACKEND_URL=${{ env.BACKEND_URL }}
+            NEXT_PUBLIC_BACKEND_URL=${{ env.NEXT_PUBLIC_BACKEND_URL }}
+            TEST=${{ env.TEST }}
+            NEXT_PUBLIC_TEST=${{ env.NEXT_PUBLIC_TEST }}
 
       - name: Build and push server (Go)
         uses: docker/build-push-action@v5
@@ -59,10 +64,11 @@ jobs:
 
       - name: Deploy Web to Dokploy
         run: |
-          curl -X POST \
-            "${{ secrets.DOKPLOY_URL }}/api/application.deploy" \
-            -H "x-api-key: ${{ secrets.DOKPLOY_API_KEY }}" \
-            -H "Content-Type: application/json" \
+          curl -X 'POST' \
+            '${{ secrets.DOKPLOY_URL }}/api/application.deploy' \
+            -H 'accept: application/json' \
+            -H 'x-api-key: ${{ secrets.DOKPLOY_API_KEY }}' \
+            -H 'Content-Type: application/json' \
             -d '{
               "applicationId": "${{ secrets.DOKPLOY_WEB_APP_ID }}",
               "imageUrl": "${{ env.WEB_IMAGE }}"
@@ -70,10 +76,11 @@ jobs:
 
       - name: Deploy Server to Dokploy
         run: |
-          curl -X POST \
-            "${{ secrets.DOKPLOY_URL }}/api/application.deploy" \
-            -H "x-api-key: ${{ secrets.DOKPLOY_API_KEY }}" \
-            -H "Content-Type: application/json" \
+          curl -X 'POST' \
+            '${{ secrets.DOKPLOY_URL }}/api/application.deploy' \
+            -H 'accept: application/json' \
+            -H 'x-api-key: ${{ secrets.DOKPLOY_API_KEY }}' \
+            -H 'Content-Type: application/json' \
             -d '{
               "applicationId": "${{ secrets.DOKPLOY_SERVER_APP_ID }}",
               "imageUrl": "${{ env.SERVER_IMAGE }}"
