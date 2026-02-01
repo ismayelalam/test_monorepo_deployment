@@ -1,18 +1,11 @@
 FROM --platform=$BUILDPLATFORM node:22-alpine AS base
 
 # Set them as ENV so Next.js sees them during build
-ARG BACKEND_URL
 ARG NEXT_PUBLIC_BACKEND_URL
-ARG TEST
-ARG NEXT_PUBLIC_TEST
 
-ENV BACKEND_URL=${BACKEND_URL}
 ENV NEXT_PUBLIC_BACKEND_URL=${NEXT_PUBLIC_BACKEND_URL}
-ENV TEST=${TEST}
-ENV NEXT_PUBLIC_TEST=${NEXT_PUBLIC_TEST}
 ENV NODE_ENV=production
 
-RUN echo "Backend_URL=$NEXT_PUBLIC_BACKEND_URL"
 
 # Enable corepack to use pnpm without global install
 RUN corepack enable pnpm
