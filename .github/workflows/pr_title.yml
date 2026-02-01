@@ -1,0 +1,26 @@
+name: Enforce PR Title Naming
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  pr-title-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR title
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          echo "Checking PR title: $PR_TITLE"
+
+          # PR title pattern
+          PATTERN="^(feature|fix|hotfix|docs|refactor|test|chore): [a-z0-9-]+$"
+
+          if [[ ! "$PR_TITLE" =~ $PATTERN ]]; then
+            echo "::error::Invalid PR title '$PR_TITLE'"
+            echo "Allowed format: <type>: <lowercase-hyphenated-description>"
+            echo "Example: feature: user-authentication"
+            exit 1
+          fi
+
+          echo "PR title is valid ✅"
